@@ -1,7 +1,10 @@
 import { TypeTodoList } from '../types/todo'
 import { TrashIcon, CheckIcon } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 export function TodoList ({ todos, onToggle, onDelete }: TypeTodoList): JSX.Element {
+  const reduxTodos = useSelector((state) => state.todos)
+  console.log('🚀 ~ TodoList ~ reduxTodos:', reduxTodos)
   return (
     <ul className='space-y-2'>
       {todos.map((todo) => (
