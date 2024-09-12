@@ -1,17 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { TodoWithId } from '../../types/todo'
 
-const initialState = [
-  {
-    id: '1',
-    text: 'todo',
-    completed: true
-  },
-  {
-    id: '2',
-    text: 'todo',
-    completed: false
+const initialState: TodoWithId[] = (() => {
+  const persistedState = localStorage.getItem('__redux__state__todo__')
+  if (persistedState !== null && persistedState !== '') {
+    return JSON.parse(persistedState).todos
   }
-]
+  return []
+})()
 
 interface TodoPayloadAction {
   text: string
@@ -30,12 +26,12 @@ export const todoSlice = createSlice({
       const { text } = action.payload
       return [...state, { id, completed: false, text }]
     },
-    deleteTodo: (state, action: PayloadAction<TodoPayloadID>) => {
+    deleteTodo: (state: TodoWithId[], action: PayloadAction<TodoPayloadID>) => {
       const { id } = action.payload
       const newTodos = state.filter((todo) => todo.id !== id)
       return [...newTodos]
     },
-    completedTodo: (state, action: PayloadAction<TodoPayloadID>) => {
+    completedTodo: (state: TodoWithId[], action: PayloadAction<TodoPayloadID>) => {
       const { id } = action.payload
       return state.map((todo) =>
         todo.id === id ? { ...todo, completed: true } : todo
