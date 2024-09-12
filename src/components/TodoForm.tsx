@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { TypeTodoForm } from '../types/todo'
 import { PlusIcon } from 'lucide-react'
+import { useTodoActions } from '../hooks/useActions'
 
-export function TodoForm ({ onAdd }: TypeTodoForm): JSX.Element {
+export function TodoForm (): JSX.Element {
   const [text, setText] = useState('')
-
+  const { addNewTodo } = useTodoActions()
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
     const trim = text.trim()
     if (trim !== '') {
-      onAdd(text.trim())
+      addNewTodo(text.trim())
       setText('')
     }
   }

@@ -1,10 +1,10 @@
-import { TypeTodoList } from '../types/todo'
 import { TrashIcon, CheckIcon } from 'lucide-react'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../hooks/useStore'
+import { useTodoActions } from '../hooks/useActions'
 
-export function TodoList ({ todos, onToggle, onDelete }: TypeTodoList): JSX.Element {
-  const reduxTodos = useSelector((state) => state.todos)
-  console.log('🚀 ~ TodoList ~ reduxTodos:', reduxTodos)
+export function TodoList (): JSX.Element {
+  const todos = useAppSelector((state) => state.todos)
+  const { removeTodo, completerTodo } = useTodoActions()
   return (
     <ul className='space-y-2'>
       {todos.map((todo) => (
@@ -17,13 +17,13 @@ export function TodoList ({ todos, onToggle, onDelete }: TypeTodoList): JSX.Elem
           <span className={todo.completed ? 'line-through' : ''}>{todo.text}</span>
           <div>
             <button
-              onClick={() => onToggle(todo.id)}
+              onClick={() => completerTodo(todo.id)}
               className='p-1 mr-2 text-green-600 hover:bg-green-100 rounded'
             >
               <CheckIcon size={18} />
             </button>
             <button
-              onClick={() => onDelete(todo.id)}
+              onClick={() => removeTodo(todo.id)}
               className='p-1 text-red-600 hover:bg-red-100 rounded'
             >
               <TrashIcon size={18} />
